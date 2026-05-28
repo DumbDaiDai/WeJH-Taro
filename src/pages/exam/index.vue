@@ -12,7 +12,7 @@
         </view>
       </view>
       <view class="flex-column">
-        <card v-if="!data || data.length === 0" style="text-align: center">
+        <card v-if="!data?.length" style="text-align: center">
           <view>无记录</view>
         </card>
         <card v-for="item in data" :key="item.id" size="small" class="exam-card">
@@ -68,8 +68,8 @@
                   {{ getDetailedTime(item.examTime) }}
                 </w-descriptions-item>
                 <w-descriptions-item label="考试地点" :label-span="6">
-                  <text>{{ item.examPlace }}</text
-                  ><text v-if="item.seatNum !== '未放开不可查'">
+                  <text>{{ item.examPlace }}</text>
+                  <text v-if="item.seatNum !== '未放开不可查'">
                     {{ ` - 座位号：${item.seatNum}` }}
                   </text>
                 </w-descriptions-item>

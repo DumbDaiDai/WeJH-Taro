@@ -30,15 +30,16 @@ export function buildTwoDimensionalLayout(lessonsList: Lesson[]): Lesson[] {
         if (unprocessedLessons.length > 0) {
           hasRemainingLessons = true;
 
-          const longestLesson = unprocessedLessons.reduce<Lesson | undefined>(
-            (longest, current) => {
-              if (!longest) return current;
-              const longestDuration = getLessonDuration(longest);
-              const currentDuration = getLessonDuration(current);
-              return currentDuration > longestDuration ? current : longest;
-            },
-            undefined
-          ) as Lesson;
+          let longestLesson: Lesson = unprocessedLessons[0];
+
+          for (let idx = 1; idx < unprocessedLessons.length; idx++) {
+            const current = unprocessedLessons[idx];
+
+            const longestDuration = getLessonDuration(longestLesson);
+            const currentDuration = getLessonDuration(current);
+
+            if (currentDuration > longestDuration) longestLesson = current;
+          }
 
           laidOutLessons.push({ ...longestLesson, stack });
           processedLessons.add(getLessonUniqueId(longestLesson));

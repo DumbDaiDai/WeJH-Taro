@@ -14,10 +14,7 @@
             <view :class="styles['num-index']">{{ i }}</view>
           </view>
         </view>
-        <view
-          v-if="lessonsTable && lessonsTable.length !== 0"
-          :class="[styles['table'], styles['table-box']]"
-        >
+        <view v-if="!isEmpty(lessonsTable)" :class="[styles['table'], styles['table-box']]">
           <view
             v-for="cl in lessonsTable"
             :key="lessonKey(cl)"
@@ -26,7 +23,7 @@
           >
             <view
               :class="styles['class-card']"
-              :style="{ '--bg-color': `var(--wjh-color-${cl.color ?? 'primary'})` }"
+              :style="lessonCardColor(cl.color)"
               @tap="emit('lessonClick', cl)"
             >
               <view :class="styles['row']">
@@ -83,6 +80,10 @@ const lessonsTable = computed(() => {
   const layoutResult = buildTwoDimensionalLayout(lessons.value);
   return colorLessons(layoutResult, COLOR_SET);
 });
+
+function lessonCardColor(color = "primary") {
+  return { "--bg-color": `var(--wjh-color-${color})` };
+}
 
 function getPosition(lesson: Lesson) {
   const begin = Number.parseInt(lesson.sections.split("-")[0]);
